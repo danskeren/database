@@ -2,12 +2,14 @@ package nosql
 
 import (
 	"context"
+	"sync"
 
 	"cloud.google.com/go/firestore"
 )
 
 type FireStore struct {
 	FireStore *firestore.Client
+	mutex     sync.Mutex
 }
 
 func OpenFireStore(ctx context.Context, projectID string) (NoSQL, error) {
@@ -25,6 +27,8 @@ func (db *FireStore) Client() *firestore.Client {
 }
 
 func (db *FireStore) Add(ctx context.Context, collection string, data map[string]interface{}) error {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
 	if _, _, err := db.FireStore.Collection(collection).Add(ctx, data); err != nil {
 		return err
 	}
@@ -32,6 +36,8 @@ func (db *FireStore) Add(ctx context.Context, collection string, data map[string
 }
 
 func (db *FireStore) Set(ctx context.Context, collection, doc string, data map[string]interface{}) error {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
 	if _, err := db.FireStore.Collection(collection).Doc(doc).Set(ctx, data); err != nil {
 		return err
 	}
@@ -39,6 +45,8 @@ func (db *FireStore) Set(ctx context.Context, collection, doc string, data map[s
 }
 
 func (db *FireStore) Delete(ctx context.Context, collection, doc string) error {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
 	if _, err := db.FireStore.Collection(collection).Doc(doc).Delete(ctx); err != nil {
 		return err
 	}
@@ -46,6 +54,8 @@ func (db *FireStore) Delete(ctx context.Context, collection, doc string) error {
 }
 
 func (db *FireStore) DeleteField(ctx context.Context, collection, doc, path string) error {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
 	if _, err := db.FireStore.Collection(collection).Doc(doc).Update(ctx, []firestore.Update{
 		{
 			Path:  path,
