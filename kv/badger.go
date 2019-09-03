@@ -36,21 +36,22 @@ func (db *badgerDB) SetWithTTL(key, value []byte, duration time.Duration) error 
 	defer db.mutex.Unlock()
 
 	return db.badger.Update(func(txn *badger.Txn) error {
-		return txn.SetWithTTL(key, value, duration)
+		entry := badger.NewEntry(key, value).WithTTL(duration)
+		return txn.SetEntry(entry)
 	})
 }
 
 func (db *badgerDB) Get(key []byte) ([]byte, error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
-
+	
 	var value []byte
 	err := db.badger.View(func(txn *badger.Txn) error {
 		item, err := txn.Get(key)
 		if err != nil {
 			return err
 		}
-		value, err = item.Value()
+		value, err = item.ValueCopy(nil)
 		return err
 	})
 	return value, err
