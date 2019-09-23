@@ -9,10 +9,10 @@ require (
 	github.com/buger/jsonparser v0.0.0-20181115193947-bf1c66bbce23
 	github.com/dgraph-io/badger v1.5.4
 	github.com/dgraph-io/dgo v1.0.0
+	github.com/dgraph-io/dgo/v2 v2.0.0
 	github.com/dgryski/go-farm v0.0.0-20190423205320-6a90982ecee2 // indirect
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible
-	github.com/stretchr/testify v1.3.0 // indirect
 	go.opencensus.io v0.22.1 // indirect
 	golang.org/x/exp v0.0.0-20190919035709-81c71964d733 // indirect
 	golang.org/x/net v0.0.0-20190921015927-1a5e07d1ff72 // indirect
