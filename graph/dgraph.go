@@ -41,7 +41,7 @@ func (db *Dgraph) SetSchema(schema string) error {
 	})
 }
 
-func (db *Dgraph) SetJSON(data []byte) (*api.Assigned, error) {
+func (db *Dgraph) SetJSON(data []byte) (*api.Response, error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	mut := &api.Mutation{
@@ -51,7 +51,7 @@ func (db *Dgraph) SetJSON(data []byte) (*api.Assigned, error) {
 	return db.Dgraph.NewTxn().Mutate(context.Background(), mut)
 }
 
-func (db *Dgraph) SetInterface(data interface{}) (*api.Assigned, error) {
+func (db *Dgraph) SetInterface(data interface{}) (*api.Response, error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	plainJSON, err := json.Marshal(data)
@@ -65,7 +65,7 @@ func (db *Dgraph) SetInterface(data interface{}) (*api.Assigned, error) {
 	return db.Dgraph.NewTxn().Mutate(context.Background(), mut)
 }
 
-func (db *Dgraph) DeleteJSON(data []byte) (*api.Assigned, error) {
+func (db *Dgraph) DeleteJSON(data []byte) (*api.Response, error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	mut := &api.Mutation{
@@ -75,7 +75,7 @@ func (db *Dgraph) DeleteJSON(data []byte) (*api.Assigned, error) {
 	return db.Dgraph.NewTxn().Mutate(context.Background(), mut)
 }
 
-func (db *Dgraph) DeleteInterface(data interface{}) (*api.Assigned, error) {
+func (db *Dgraph) DeleteInterface(data interface{}) (*api.Response, error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	plainJSON, err := json.Marshal(data)
