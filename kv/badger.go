@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/dgraph-io/badger"
+	"github.com/dgraph-io/badger/v2"
 )
 
 type badgerDB struct {
@@ -44,7 +44,7 @@ func (db *badgerDB) SetWithTTL(key, value []byte, duration time.Duration) error 
 func (db *badgerDB) Get(key []byte) ([]byte, error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
-	
+
 	var value []byte
 	err := db.badger.View(func(txn *badger.Txn) error {
 		item, err := txn.Get(key)
